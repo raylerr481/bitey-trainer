@@ -1,33 +1,35 @@
 # Bitey Trainer
 
-**Bitey Trainer es el motor interno de entrenamiento, evaluación y validación de inteligencia de JobIA dentro de Bitey IA Web.**
+**Bitey Trainer es un modelo/capacidad interna de Bitey IA Web para entrenamiento, evaluación, validación y evolución de inteligencia especializada.**
 
-No es una aplicación ni un cliente. No controla JobIA-Web ni JobIA-app.
+No es una aplicación, no es un cliente, no sustituye a JobIA y no controla directamente JobIA-Web ni JobIA-app. Su origen y autoridad pertenecen a Bitey IA Web.
 
 ## Posición en la arquitectura
 
 ```text
                          BITEY IA WEB
-                    inteligencia general
+                  inteligencia general / núcleo
                            │
-              Cognitive Core / políticas
+                           │ contiene
+                           ▼
+                    BITEY TRAINER
+             modelo/capacidad de entrenamiento
+             evaluación · validación · evolución
                            │
-                    ┌──────▼──────┐
-                    │    JobIA    │
-                    │ backend     │
-                    │ empleo      │
-                    └──────┬──────┘
-                           ▲
-                           │ capacidades validadas
+                capacidades especializadas
+                           ▼
+                         JOBIA
+                backend/producto de empleo
                            │
-                    Bitey Trainer
-                  entrenamiento/evaluación
-                           │
-                 ┌─────────┴─────────┐
-                 ▼                   ▼
-            JobIA-Web           JobIA-app
-             cliente               cliente
+                  contrato versionado
+                     jobia-v1 / API
+                    ┌──────┴──────┐
+                    ▼             ▼
+                JobIA-Web      JobIA-app
+                  web            Android
 ```
+
+Bitey IA Web y JobIA mantienen identidades de producto separadas. Bitey Trainer no crea una segunda web ni un segundo cerebro independiente.
 
 ## Responsabilidad
 
@@ -42,7 +44,7 @@ Trainer desarrolla y valida capacidades especializadas como:
 - scoring, ranking y explicaciones;
 - preparación de CV/propuestas/aplicaciones;
 - evaluación de respuestas de IA;
-- aprendizaje a partir de feedback.
+- aprendizaje a partir de feedback y regresiones.
 
 ## Contrato con JobIA
 
@@ -50,14 +52,18 @@ El flujo es:
 
 ```text
 Definir → Implementar → Probar → Medir → Mejorar
-        → Validar → Publicar contrato → JobIA consume
+        → Validar → Publicar capacidad/contrato → JobIA consume
 ```
 
-JobIA es el backend de producto y expone las capacidades a los clientes. Trainer no debe crear un segundo backend público ni duplicar la API de los clientes.
+JobIA es el backend/producto especializado de empleo y expone sus capacidades a JobIA-Web y JobIA-app. Trainer no debe crear un segundo backend público ni duplicar la API de los clientes.
 
-## Relación con Bitey IA Web
+## Relación bidireccional
 
-Bitey IA Web es el sistema general y conserva la autoridad sobre razonamiento general, memoria, selección de herramientas/modelos y políticas. Trainer aporta inteligencia especializada para empleo.
+- **Bitey IA Web → JobIA:** cuando una solicitud necesita conocimiento o acciones especializadas de empleo/trabajo.
+- **JobIA → Bitey IA Web:** cuando necesita razonamiento general, orquestación, memoria, herramientas, selección de modelos o políticas generales.
+- **Bitey Trainer → JobIA:** aporta capacidades entrenadas/validadas y evaluación especializada.
+
+Las integraciones deben realizarse mediante contratos versionados y APIs, nunca acoplando las interfaces web entre sí.
 
 ## Seguridad
 
@@ -69,4 +75,4 @@ Bitey IA Web es el sistema general y conserva la autoridad sobre razonamiento ge
 
 ## Principio
 
-> **Bitey IA Web coordina; Bitey Trainer entrena y valida; JobIA ejecuta el contrato de empleo; JobIA-Web y JobIA-app presentan el producto al usuario.**
+> **Bitey IA Web es el sistema general; Bitey Trainer es una capacidad/modelo interno de Bitey para entrenar y validar; JobIA es la especialidad de empleo; JobIA-Web y JobIA-app son productos/clientes independientes de JobIA.**
