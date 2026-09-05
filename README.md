@@ -1,74 +1,84 @@
 # Bitey Trainer
 
-**Capacidad interna de Bitey IA para entrenamiento, evaluación, validación y evolución de inteligencia.**
+**Internal Bitey IA capability for training, evaluation, validation, and intelligence evolution.**
 
-Bitey Trainer no es una aplicación, no es un canal web/Android y no es un segundo cerebro. Forma parte de las capacidades internas de Bitey IA y puede entrenar y validar capacidades especializadas que utilizan sus módulos, incluido JobIA.
+Bitey Trainer is not an application, web/Android channel, or second brain. It is an internal capability of Bitey IA that can train and validate specialized capabilities used by its modules, including JobIA.
 
-## Posición en la arquitectura
+## Language and naming standard
+
+All repository documentation, API contracts, backend/frontend references, variable names, model fields, JSON keys, configuration keys, dataset fields, evaluation identifiers, and internal technical references must use **English**.
+
+Human-facing evaluation text may be localized when required, but technical identifiers must remain English and stable.
+
+Examples: `job_id`, `skill`, `location`, `modality`, `match_score`, `application`, `evaluation`, `dataset_version`.
+
+Do not introduce Spanish variable names, JSON keys, API parameters, database fields, or internal identifiers in new code.
+
+## Architectural position
 
 ```text
                          BITEY IA
-                    inteligencia general
+                    general intelligence
                            │
                     BITEY TRAINER
-             entrenamiento · evaluación
-                validación · evolución
+             training · evaluation
+              validation · evolution
                            │
-              capacidades validadas
+              validated capabilities
                            ▼
                          JOBIA
-                módulo de empleo/trabajo
+                employment/work module
                            │
-                    contrato jobia-v1
+                    contract jobia-v1
                       ┌────┴────┐
                       ▼         ▼
                   JobIA-Web JobIA-app
                      Web      Android
-                    canal       canal
+                   channel     channel
 ```
 
-`Bitey IA Web` es el canal web de Bitey IA. `JobIA-Web` y `JobIA-app` son canales de JobIA. Trainer no controla directamente ninguna interfaz.
+`Bitey IA Web` is the web channel of Bitey IA. `JobIA-Web` and `JobIA-app` are JobIA channels. Trainer does not directly control any interface.
 
-## Responsabilidad
+## Responsibilities
 
-Trainer desarrolla y valida capacidades especializadas como:
+Trainer develops and validates specialized capabilities such as:
 
-- descubrimiento y normalización de oportunidades;
-- detección de duplicados y oportunidades obsoletas;
-- matching por habilidades transferibles;
-- idioma, ubicación y modalidad;
-- análisis de compensación;
-- clasificación HUMAN/BITEY/HYBRID;
-- scoring, ranking y explicaciones;
-- preparación de CV/propuestas/aplicaciones;
-- evaluación de respuestas de IA;
-- aprendizaje a partir de feedback y regresiones.
+- opportunity discovery and normalization;
+- duplicate and stale-opportunity detection;
+- transferable-skill matching;
+- language, location, and modality analysis;
+- compensation analysis;
+- HUMAN/BITEY/HYBRID classification;
+- scoring, ranking, and explanations;
+- CV/proposal/application preparation;
+- AI response evaluation;
+- feedback and regression learning.
 
-## Contrato con JobIA
+## JobIA lifecycle
 
 ```text
-Definir → Implementar → Probar → Medir → Mejorar
-        → Validar → Publicar capacidad → JobIA consume
+Define → Implement → Test → Measure → Improve
+       → Validate → Publish capability → JobIA consumes
 ```
 
-JobIA es el módulo/backend especializado de empleo y expone sus capacidades a sus canales web y Android. Trainer no crea un segundo backend público ni duplica la API de los canales.
+JobIA is the specialized employment/work module and exposes its capabilities to its web and Android channels. Trainer does not create a second public backend or duplicate channel APIs.
 
-## Relación bidireccional
+## Bidirectional relationship
 
-- **Bitey IA → JobIA:** cuando una solicitud necesita conocimiento o acciones especializadas de empleo/trabajo.
-- **JobIA → Bitey IA:** cuando necesita razonamiento general, orquestación, memoria, herramientas, selección de modelos o políticas generales.
-- **Bitey Trainer → JobIA:** aporta capacidades entrenadas/validadas y evaluación especializada.
+- **Bitey IA → JobIA:** when a request requires specialized employment/work knowledge or actions.
+- **JobIA → Bitey IA:** when general reasoning, orchestration, memory, tools, model selection, or general policies are required.
+- **Bitey Trainer → JobIA:** provides trained and validated specialized capabilities and evaluation.
 
-Las integraciones se realizan mediante contratos versionados y APIs, nunca acoplando las interfaces web entre sí.
+Integrations use versioned contracts and APIs, never direct coupling between web interfaces.
 
-## Seguridad
+## Security
 
-- Sin secretos de proveedores en código.
-- Datos aislados por cuenta/tenant.
-- Autorización en backend.
-- Sin exposición automática de datos privados de JobIA.
-- Ninguna automatización debe suplantar al usuario ni saltarse evaluaciones, identidad o términos de plataformas.
+- No provider secrets in source code.
+- Data isolated by account/tenant.
+- Authorization enforced by backend services.
+- No automatic exposure of private JobIA data.
+- Automation must not impersonate users or bypass identity, evaluation, or platform terms.
 
-## Principio
+## Principle
 
-> **Bitey IA es el sistema general. Bitey Trainer es una capacidad interna para entrenar y validar. JobIA es el módulo especializado de empleo. JobIA-Web y JobIA-app son sus canales web y Android. Bitey IA Web es el canal web de Bitey IA.**
+> **Bitey IA is the general system. Bitey Trainer is an internal capability for training and validation. JobIA is the specialized employment/work module. JobIA-Web and JobIA-app are its web and Android channels. Bitey IA Web is the web channel of Bitey IA.**
