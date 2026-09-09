@@ -71,6 +71,18 @@ JobIA is the specialized employment/work module and exposes its capabilities to 
 
 Integrations use versioned contracts and APIs, never direct coupling between web interfaces.
 
+## Infrastructure and cost policy
+
+Bitey/BiteFixes follows a **free-first, no-surprise-cost architecture**.
+
+- Prefer free services, open-source software, or free tiers without automatic billing risk.
+- Do not add providers requiring a payment card merely to start or capable of unexpected entry/egress, API, traffic, storage, or execution charges.
+- **Railway is explicitly excluded** from BiteFixes/Bitey infrastructure.
+- Cloudflare is permitted when the free tier is sufficient and any later cost occurs only after a clearly defined usage threshold; paid plans and automatic billing must not be enabled without explicit approval.
+- Before incorporating a new service, verify pricing, billing behavior, limits, card requirements, and overage behavior.
+- If a service can generate costs without an explicit decision first, use a safer alternative.
+- This policy is documentation-only and does not modify existing working integrations.
+
 ## Security
 
 - No provider secrets in source code.
