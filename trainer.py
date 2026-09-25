@@ -56,3 +56,45 @@ def normalize_candidate(payload: dict[str, Any]) -> TrainingCandidate:
         evidence_refs=list(payload.get("evidence_refs", []))[:8],
         scores=dict(payload.get("scores", {}))
     )
+
+
+@dataclass
+class Lesson:
+    schema_version: str
+    task: str
+    intent: str
+    strategy: str
+    validated_answer: str
+    evidence_refs: list[dict[str, str]]
+    confidence: float
+    lesson_key: str
+
+
+def build_lesson(candidate: TrainingCandidate, evaluation: Evaluation) -> Lesson | None:
+    """Create a bounded reusable lesson only from a passed candidate."""
+    if not evaluation.passed:
+        return None
+    answer = candidate.validated_answer.strip()
+    key = f"{candidate.intent}:{candidate.strategy}:{candidate.task.strip().lower()[:240]}"
+    scores = [v for v in candidate.scores.values() if isinstance(v, (int, float))]
+    confidence = min(1.0, max([evaluation.score, *[float(v) for v in scores]] or [0.0]))
+    return Lesson(
+        schema_version="bitey-lesson-v1",
+        task=candidate.task,
+        intent=candidate.intent,
+        strategy=candidate.strategy,
+        validated_answer=answer,
+        evidence_refs=candidate.evidence_refs,
+        confidence=confidence,
+        lesson_key=key,
+    )
+
+
+def deduplicate_lessons(lessons: list[Lesson]) -> list[Lesson]:
+    """Keep the highest-confidence lesson for each bounded semantic key."""
+    best: dict[str, Lesson] = {}
+    for lesson in lessons:
+        current = best.get(lesson.lesson_key)
+        if current is None or lesson.confidence > current.confidence:
+            best[lesson.lesson_key] = lesson
+    return list(best.values())
